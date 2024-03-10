@@ -31,12 +31,10 @@ const PlanetForm = () => {
       filteredBodies = filteredBodies.filter(body => body.isPlanet === value.isPlanet);
     }
     setBodiesFilter(filteredBodies);
-    console.log(filteredBodies)
   };
 
   const handleBodySelect = (data) => {
     const filteredContent = bodies.filter(body => body.id == data);
-    console.log('data is', filteredContent[0])
     setBodiesContent(filteredContent[0])
   };
   const onSubmit = (data) => {
@@ -63,14 +61,13 @@ const PlanetForm = () => {
         <div class='pluto'></div>
         <div class='asteroids-belt'></div>
         <div class='content'>
-          <label style={{'display': 'flex', 'justifyContent': 'space-between'}}>
-          <h1>RHOBS Challenge</h1>
-          <img class="logo" src="./logo.png" alt="Description de l'image" />
+          <label style={{ 'display': 'flex', 'justifyContent': 'space-between'}}>
+            <h1>RHOBS Challenge</h1>
+            <img class="logo" src="./logo.png" alt="Description de l'image" />
           </label>
           <form onSubmit={handleSubmit(onSubmit)}>
-
             <label>
-            <span class="label-text">Is Planet:</span> 
+              <span class="label-text">Is Planet:</span>
               <Controller
                 control={control}
                 render={({ field }) => (
@@ -81,7 +78,7 @@ const PlanetForm = () => {
                       handleSubmit(onSubmit)();
                     }}
                   />
-                  
+
                 )}
                 name="isPlanet"
               />
@@ -105,10 +102,10 @@ const PlanetForm = () => {
                 )}
                 name="gravity"
               />
-               {submittedData && (
-              <label for="range">{submittedData.gravity}</label> )}
-            </label> 
-            <br/>
+              {submittedData && (
+                <label for="range">{submittedData.gravity}</label>)}
+            </label>
+            <br />
             <label>
               Select Body:
               <select onChange={(e) => handleBodySelect(e.target.value)}>
@@ -124,7 +121,7 @@ const PlanetForm = () => {
           <br />
           {bodiesContent && (
             <div class="contentText">
-              <h2>Bienvenue sur : {bodiesContent.name}</h2>
+              <h2 style={{'text-align':'center'}}>Bienvenue sur : {bodiesContent.name}</h2>
               <p><strong>Discovered by:</strong> {bodiesContent.discoveredBy}</p>
               <p><strong>Discovery date:</strong> {bodiesContent.discoveryDate}</p>
               <p><strong>Mean radius:</strong> {bodiesContent.meanRadius} km</p>
