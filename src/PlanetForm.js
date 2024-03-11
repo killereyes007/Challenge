@@ -9,13 +9,25 @@ const PlanetForm = () => {
   const [bodiesFilter, setBodiesFilter] = useState([]);
   const [bodiesContent, setBodiesContent] = useState();
   const [submittedData, setSubmittedData] = useState(null);
+  const [maxGravity, setMaxGravity] = useState(0);
 
   const fetchData = () => {
     // Fetch data from the API
     axios.get('https://api.le-systeme-solaire.net/rest/bodies/')
       .then(response => {
+        // Initialisation de la gravité maximale à la plus petite valeur possible
+        let maxGravity = Number.MIN_VALUE;
         setBodies(response.data.bodies);
         setBodiesFilter(response.data.bodies);
+        // Parcourir la liste des corps célestes
+        response.data.bodies.forEach((body) => {
+          // Mettre à jour la gravité maximale si la gravité du corps actuel est plus grande
+          if (body.gravity > maxGravity) {
+            maxGravity = body.gravity;
+          }
+        })
+        console.log("Gravité maximale :", maxGravity);
+        setMaxGravity(maxGravity);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -61,7 +73,7 @@ const PlanetForm = () => {
         <div class='pluto'></div>
         <div class='asteroids-belt'></div>
         <div class='content'>
-          <label style={{ 'display': 'flex', 'justifyContent': 'space-between'}}>
+          <label style={{ 'display': 'flex', 'justifyContent': 'space-between' }}>
             <h1>RHOBS Challenge</h1>
             <img class="logo" src="./logo.png" alt="Description de l'image" />
           </label>
@@ -92,7 +104,7 @@ const PlanetForm = () => {
                   <input
                     type="range"
                     min="0"
-                    max="30"
+                    max={maxGravity}
                     step="0.1"
                     onChange={(e) => {
                       setValue('gravity', e.target.value);
@@ -121,7 +133,7 @@ const PlanetForm = () => {
           <br />
           {bodiesContent && (
             <div class="contentText">
-              <h2 style={{'text-align':'center'}}>Bienvenue sur : {bodiesContent.name}</h2>
+              <h2 style={{ 'text-align': 'center' }}>Bienvenue sur : {bodiesContent.name}</h2>
               <p><strong>Discovered by:</strong> {bodiesContent.discoveredBy}</p>
               <p><strong>Discovery date:</strong> {bodiesContent.discoveryDate}</p>
               <p><strong>Mean radius:</strong> {bodiesContent.meanRadius} km</p>
